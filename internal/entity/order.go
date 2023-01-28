@@ -1,6 +1,6 @@
 package entity
 
 type Order struct {
-	ID     int `json:"id"`
-	UserId int `json:"userId"`
+	ID     string `json:"id"`
+	UserId string `json:"userId"`
 }

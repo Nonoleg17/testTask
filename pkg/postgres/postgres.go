@@ -28,7 +28,6 @@ func New(db *config.Config) (*Postgres, error) {
 		dbConn.LogMode(true)
 	}
 	dbConn.Update()
-	dbConn.AutoMigrate()
 	pg := &Postgres{
 		DbConnect: dbConn,
 	}

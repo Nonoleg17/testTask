@@ -1,9 +1,9 @@
 package entity
 
 type Product struct {
-	ID          int    `json:"id"`
+	ID          string `json:"id"`
 	Description string `json:"description"`
 	Price       int    `json:"price"`
 	Currency    string `json:"currency"`
-	LeftInStock int    `json:"leftInStock"`
+	LeftInStock int    `json:"left_in_stock"`
 }

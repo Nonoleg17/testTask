@@ -2,7 +2,7 @@ package repo
 
 import (
 	"context"
-	"fmt"
+	uuid "github.com/satori/go.uuid"
 	"testCase/internal/entity"
 	"testCase/pkg/postgres"
 )
@@ -19,7 +19,6 @@ func NewUserRepo(pg *postgres.Postgres) *UserRepo {
 }
 
 func (ur *UserRepo) CreateUser(ctx context.Context, u *entity.User) error {
-	fmt.Println(ur.pg.DbConnect.DB())
 	if err := ur.pg.DbConnect.Create(u).Error; err != nil {
 		return err
 	}
@@ -27,15 +26,21 @@ func (ur *UserRepo) CreateUser(ctx context.Context, u *entity.User) error {
 	return nil
 }
 
-func (ur *UserRepo) DeleteUser(ctx context.Context, u entity.User) error {
-	if err := ur.pg.DbConnect.Delete(u).Error; err != nil {
+func (ur *UserRepo) DeleteUser(ctx context.Context, id uuid.UUID) error {
+	if err := ur.pg.DbConnect.Delete(&entity.User{}, id).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (ur *UserRepo) UpdateUser(ctx context.Context, u entity.User) error {
-	if err := ur.pg.DbConnect.Update(u).Error; err != nil {
+func (ur *UserRepo) UpdateUser(ctx context.Context, u *entity.User) error {
+	if err := ur.pg.DbConnect.Model(u).Update(&entity.User{
+		Firstname:  u.Firstname,
+		Surname:    u.Surname,
+		Middlename: u.Middlename,
+		Sex:        u.Sex,
+		Age:        u.Age,
+	}).Error; err != nil {
 		return err
 	}
 	return nil

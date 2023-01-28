@@ -24,9 +24,11 @@ func Run(cfg *config.Config) {
 	}
 
 	userUseCase := usecase.NewUserUseCase(repo.NewUserRepo(pg))
+	productUseCase := usecase.NewProductUseCase(repo.NewProductRepo(pg))
+	friendshipUseCase := usecase.NewFriendshipUseCase(repo.NewFriendshipRepo(pg))
 
 	handler := gin.New()
-	http.NewRouter(handler, l, userUseCase)
+	http.NewRouter(handler, l, userUseCase, productUseCase, friendshipUseCase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTPPort))
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)

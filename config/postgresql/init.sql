@@ -1,5 +1,6 @@
-CREATE TABLE IF NOT EXISTS "User" (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TABLE IF NOT EXISTS "users" (
+    id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     firstname text not null,
     surname text not null,
     middlename text not null,
@@ -8,22 +9,22 @@ CREATE TABLE IF NOT EXISTS "User" (
     sex text not null,
     age int not null
     );
-CREATE TABLE IF NOT EXISTS "Friendship" (
-    user_1_id BIGINT,
-    user_2_id BIGINT,
+CREATE TABLE IF NOT EXISTS "friendships" (
+    first_user_id uuid,
+    second_user_id uuid,
     friendship_status text,
-    PRIMARY KEY (user_1_id, user_2_id),
-    CONSTRAINT fk_user_1_id FOREIGN KEY (user_1_id) REFERENCES "User"(id),
-    CONSTRAINT fk_user_2_id FOREIGN KEY (user_2_id) REFERENCES "User"(id)
+    PRIMARY KEY (first_user_id, second_user_id),
+    CONSTRAINT fk_user_1_id FOREIGN KEY (first_user_id) REFERENCES "users"(id),
+    CONSTRAINT fk_user_2_id FOREIGN KEY (second_user_id) REFERENCES "users"(id)
 );
-CREATE TABLE IF NOT EXISTS "Order"
+CREATE TABLE IF NOT EXISTS "orders"
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "User"(id)
+    user_id uuid NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "users"(id)
 );
 
-CREATE TABLE IF NOT EXISTS "Product"
+CREATE TABLE IF NOT EXISTS "products"
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description text,
@@ -32,13 +33,13 @@ CREATE TABLE IF NOT EXISTS "Product"
     left_in_stock int
 
 );
-CREATE TABLE IF NOT EXISTS "Order_product"
+CREATE TABLE IF NOT EXISTS "orderProducts"
 (
     order_id BIGINT,
     product_id BIGINT,
     PRIMARY KEY (order_id, product_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES "Order"(id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES "Product"(id)
+    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES "orders"(id),
+    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES "products"(id)
 );
 
 CREATE FUNCTION check_left_in_stock() RETURNS trigger as $$
@@ -51,11 +52,11 @@ END;
     $$ language plpgsql;
 
 CREATE TRIGGER check_left_in_stock_trigger
-    before insert or update on "Product"
+    before insert or update on "products"
     for each row
     execute function check_left_in_stock();
 
-INSERT INTO "User"(firstname,surname,middlename,sex,age) values
+INSERT INTO "users"(firstname,surname,middlename,sex,age) values
                                                              ('John','Snow','Eddard','M',20),
                                                              ('Mike','Lobo', 'Dekkard','M',21),
                                                              ('Lina','Rola', 'Ridic','W',45),
@@ -63,7 +64,7 @@ INSERT INTO "User"(firstname,surname,middlename,sex,age) values
                                                              ('Peter','Polo', 'Line','M',60);
 
 
-INSERT INTO "Product"(description,price,currency, left_in_stock) values
+INSERT INTO "products"(description,price,currency, left_in_stock) values
                                                            ('Car', 1000, 'dollars', 10),
                                                            ('Book', 500, 'rubbles', 1),
                                                            ('Radio', 15, 'euro', 0),
