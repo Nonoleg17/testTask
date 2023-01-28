@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	uuid "github.com/satori/go.uuid"
 	"testCase/internal/entity"
 	"testCase/pkg/postgres"
 )
@@ -25,8 +26,8 @@ func (pr *ProductRepo) CreateProduct(ctx context.Context, p *entity.Product) err
 	return nil
 }
 
-func (pr *ProductRepo) DeleteProduct(ctx context.Context, id string) error {
-	if err := pr.pg.DbConnect.Delete(&entity.Product{}, id).Error; err != nil {
+func (pr *ProductRepo) DeleteProduct(ctx context.Context, id uuid.UUID) error {
+	if err := pr.pg.DbConnect.Delete(&entity.Product{ID: id}).Error; err != nil {
 		return err
 	}
 	return nil

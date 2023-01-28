@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"net/http"
 	"testCase/internal/entity"
 	"testCase/internal/usecase"
@@ -15,14 +16,14 @@ type ProductCreateRequest struct {
 	LeftInStock int    `json:"left_in_stock"`
 }
 type ProductDeleteRequest struct {
-	Id string `json:"id" binding:"required"`
+	Id uuid.UUID `json:"id" binding:"required"`
 }
 type ProductUpdateRequest struct {
-	Id          string `json:"id" binding:"required"`
-	Description string `json:"description" binding:"required"`
-	Price       int    `json:"price" binding:"required"`
-	Currency    string `json:"currency" binding:"required"`
-	LeftInStock int    `json:"left_in_stock"`
+	Id          uuid.UUID `json:"id" binding:"required"`
+	Description string    `json:"description" binding:"required"`
+	Price       int       `json:"price" binding:"required"`
+	Currency    string    `json:"currency" binding:"required"`
+	LeftInStock int       `json:"left_in_stock"`
 }
 type ProductRoutes struct {
 	u usecase.Product

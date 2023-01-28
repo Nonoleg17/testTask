@@ -2,14 +2,15 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"net/http"
 	"testCase/internal/usecase"
 	"testCase/pkg/logger"
 )
 
 type friendshipRequest struct {
-	FirstUserId  string `json:"first_user_id"  binding:"required"`
-	SecondUserId string `json:"second_user_id"  binding:"required"`
+	FirstUserId  uuid.UUID `json:"first_user_id"  binding:"required"`
+	SecondUserId uuid.UUID `json:"second_user_id"  binding:"required"`
 }
 
 type friendshipRoutes struct {

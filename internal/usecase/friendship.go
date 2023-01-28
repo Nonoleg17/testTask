@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	uuid "github.com/satori/go.uuid"
 )
 
 type FriendshipUseCase struct {
@@ -12,6 +13,6 @@ func NewFriendshipUseCase(r FriendshipRepo) *FriendshipUseCase {
 	return &FriendshipUseCase{r}
 }
 
-func (uc *FriendshipUseCase) FollowUser(ctx context.Context, follower string, target string) error {
+func (uc *FriendshipUseCase) FollowUser(ctx context.Context, follower uuid.UUID, target uuid.UUID) error {
 	return uc.repo.FollowUser(ctx, follower, target)
 }

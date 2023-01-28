@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	uuid "github.com/satori/go.uuid"
 	"testCase/internal/entity"
 )
 
@@ -17,7 +18,7 @@ func (uc *ProductUseCase) CreateProduct(ctx context.Context, u *entity.Product) 
 	return uc.repo.CreateProduct(ctx, u)
 }
 
-func (uc *ProductUseCase) DeleteProduct(ctx context.Context, id string) error {
+func (uc *ProductUseCase) DeleteProduct(ctx context.Context, id uuid.UUID) error {
 	return uc.repo.DeleteProduct(ctx, id)
 }
 

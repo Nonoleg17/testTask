@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 	"testCase/internal/entity"
 	"testCase/pkg/constants"
 	"testCase/pkg/postgres"
@@ -20,7 +21,7 @@ func NewFriendshipRepo(pg *postgres.Postgres) *FriendshipRepo {
 
 }
 
-func (fr *FriendshipRepo) FollowUser(ctx context.Context, follower string, target string) error {
+func (fr *FriendshipRepo) FollowUser(ctx context.Context, follower uuid.UUID, target uuid.UUID) error {
 	if follower == target {
 		return errors.New("follower and target the same")
 	}

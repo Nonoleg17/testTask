@@ -17,15 +17,15 @@ type UserCreateRequest struct {
 	Age        int    `json:"age" binding:"required"`
 }
 type UserDeleteRequest struct {
-	Id string `json:"id" binding:"required"`
+	Id uuid.UUID `json:"id" binding:"required"`
 }
 type UserUpdateRequest struct {
-	Id         string `json:"id" binding:"required"`
-	Firstname  string `json:"firstname" binding:"required"`
-	Surname    string `json:"surname" binding:"required"`
-	Middlename string `json:"middlename" binding:"required"`
-	Sex        string `json:"sex" binding:"required"`
-	Age        int    `json:"age" binding:"required"`
+	Id         uuid.UUID `json:"id" binding:"required"`
+	Firstname  string    `json:"firstname" binding:"required"`
+	Surname    string    `json:"surname" binding:"required"`
+	Middlename string    `json:"middlename" binding:"required"`
+	Sex        string    `json:"sex" binding:"required"`
+	Age        int       `json:"age" binding:"required"`
 }
 type userRoutes struct {
 	u usecase.User
@@ -71,13 +71,7 @@ func (r *userRoutes) DeleteUser(c *gin.Context) {
 		errorResponse(c, http.StatusBadRequest, "invalid request body")
 		return
 	}
-	idUUID, err := uuid.FromString(request.Id)
-	if err != nil {
-		r.l.Error(err, "http - UpdateUser")
-		errorResponse(c, http.StatusInternalServerError, "UUID user problem")
-		return
-	}
-	err = r.u.DeleteUser(c.Request.Context(), idUUID)
+	err := r.u.DeleteUser(c.Request.Context(), request.Id)
 	if err != nil {
 		r.l.Error(err, "http - DeleteUser")
 		errorResponse(c, http.StatusInternalServerError, "delete user problem")
@@ -93,14 +87,8 @@ func (r *userRoutes) UpdateUser(c *gin.Context) {
 		errorResponse(c, http.StatusBadRequest, "invalid request body")
 		return
 	}
-	idUUID, err := uuid.FromString(request.Id)
-	if err != nil {
-		r.l.Error(err, "http - UpdateUser")
-		errorResponse(c, http.StatusInternalServerError, "UUID user problem")
-		return
-	}
-	err = r.u.UpdateUser(c.Request.Context(), &entity.User{
-		ID:         idUUID,
+	err := r.u.UpdateUser(c.Request.Context(), &entity.User{
+		ID:         request.Id,
 		Firstname:  request.Firstname,
 		Surname:    request.Surname,
 		Middlename: request.Middlename,

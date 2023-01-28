@@ -14,11 +14,11 @@ type (
 	}
 	Product interface {
 		CreateProduct(context.Context, *entity.Product) error
-		DeleteProduct(context.Context, string) error
+		DeleteProduct(context.Context, uuid.UUID) error
 		UpdateProduct(context.Context, *entity.Product) error
 	}
 	Friendship interface {
-		FollowUser(context.Context, string, string) error
+		FollowUser(context.Context, uuid.UUID, uuid.UUID) error
 	}
 	UserRepo interface {
 		CreateUser(context.Context, *entity.User) error
@@ -27,10 +27,10 @@ type (
 	}
 	ProductRepo interface {
 		CreateProduct(context.Context, *entity.Product) error
-		DeleteProduct(context.Context, string) error
+		DeleteProduct(context.Context, uuid.UUID) error
 		UpdateProduct(context.Context, *entity.Product) error
 	}
 	FriendshipRepo interface {
-		FollowUser(context.Context, string, string) error
+		FollowUser(context.Context, uuid.UUID, uuid.UUID) error
 	}
 )

@@ -27,7 +27,7 @@ func (ur *UserRepo) CreateUser(ctx context.Context, u *entity.User) error {
 }
 
 func (ur *UserRepo) DeleteUser(ctx context.Context, id uuid.UUID) error {
-	if err := ur.pg.DbConnect.Delete(&entity.User{}, id).Error; err != nil {
+	if err := ur.pg.DbConnect.Delete(&entity.User{ID: id}).Error; err != nil {
 		return err
 	}
 	return nil

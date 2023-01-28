@@ -19,14 +19,14 @@ CREATE TABLE IF NOT EXISTS "friendships" (
 );
 CREATE TABLE IF NOT EXISTS "orders"
 (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     user_id uuid NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "users"(id)
 );
 
 CREATE TABLE IF NOT EXISTS "products"
 (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     description text,
     price int,
     currency text,
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS "products"
 );
 CREATE TABLE IF NOT EXISTS "orderProducts"
 (
-    order_id BIGINT,
-    product_id BIGINT,
+    order_id uuid,
+    product_id uuid,
     PRIMARY KEY (order_id, product_id),
     CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES "orders"(id),
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES "products"(id)

@@ -1,6 +1,8 @@
 package entity
 
+import uuid "github.com/satori/go.uuid"
+
 type Order struct {
-	ID     string `json:"id"`
-	UserId string `json:"userId"`
+	ID     uuid.UUID `json:"id"`
+	UserId uuid.UUID `json:"userId"`
 }
