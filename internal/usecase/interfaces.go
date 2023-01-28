@@ -20,6 +20,17 @@ type (
 	Friendship interface {
 		FollowUser(context.Context, uuid.UUID, uuid.UUID) error
 	}
+	Order interface {
+		CreateOrder(context.Context, *entity.Order) (uuid.UUID, error)
+		DeleteOrder(context.Context, uuid.UUID) error
+		UpdateOrder(context.Context, *entity.Order) error
+	}
+	OrderProduct interface {
+		CreateOrderProduct(context.Context, *entity.OrderProduct) error
+		ClearAllOrderProduct(context.Context, uuid.UUID) error
+		DeleteOrderProduct(context.Context) error
+		UpdateOrderProduct(context.Context) error
+	}
 	UserRepo interface {
 		CreateUser(context.Context, *entity.User) error
 		DeleteUser(context.Context, uuid.UUID) error
@@ -32,5 +43,16 @@ type (
 	}
 	FriendshipRepo interface {
 		FollowUser(context.Context, uuid.UUID, uuid.UUID) error
+	}
+	OrderRepo interface {
+		CreateOrder(context.Context, *entity.Order) (uuid.UUID, error)
+		DeleteOrder(context.Context, uuid.UUID) error
+		UpdateOrder(context.Context, *entity.Order) error
+	}
+	OrderProductRepo interface {
+		CreateOrderProduct(context.Context, *entity.OrderProduct) error
+		ClearAllOrderProduct(context.Context, uuid.UUID) error
+		DeleteOrderProduct(context.Context) error
+		UpdateOrderProduct(context.Context) error
 	}
 )

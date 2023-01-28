@@ -14,14 +14,14 @@ CREATE TABLE IF NOT EXISTS "friendships" (
     second_user_id uuid,
     friendship_status text,
     PRIMARY KEY (first_user_id, second_user_id),
-    CONSTRAINT fk_user_1_id FOREIGN KEY (first_user_id) REFERENCES "users"(id),
-    CONSTRAINT fk_user_2_id FOREIGN KEY (second_user_id) REFERENCES "users"(id)
+    CONSTRAINT fk_user_1_id FOREIGN KEY (first_user_id) REFERENCES "users"(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_2_id FOREIGN KEY (second_user_id) REFERENCES "users"(id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "orders"
 (
     id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     user_id uuid NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "users"(id)
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES "users"(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "products"
@@ -33,13 +33,14 @@ CREATE TABLE IF NOT EXISTS "products"
     left_in_stock int
 
 );
-CREATE TABLE IF NOT EXISTS "orderProducts"
+CREATE TABLE IF NOT EXISTS "order_products"
 (
     order_id uuid,
     product_id uuid,
+    count_products int,
     PRIMARY KEY (order_id, product_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES "orders"(id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES "products"(id)
+    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES "orders"(id) ON DELETE CASCADE ,
+    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES "products"(id) ON DELETE CASCADE
 );
 
 CREATE FUNCTION check_left_in_stock() RETURNS trigger as $$

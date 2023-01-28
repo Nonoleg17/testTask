@@ -25,32 +25,32 @@ func (fr *FriendshipRepo) FollowUser(ctx context.Context, follower uuid.UUID, ta
 	if follower == target {
 		return errors.New("follower and target the same")
 	}
-	firstUser := &entity.Friendship{
+	friendship := &entity.Friendship{
 		FirstUserId:  follower,
 		SecondUserId: target,
 	}
-	secondUser := &entity.Friendship{
-		FirstUserId:  target,
-		SecondUserId: follower,
-	}
-	if err := fr.pg.DbConnect.First(firstUser).Error; err != nil {
+
+	if err := fr.pg.DbConnect.First(&entity.Friendship{}, "first_user_id = ? AND second_user_id = ?",
+		follower, target).Error; err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
 
 	} else {
+
 		return errors.New("cannot follow the user again")
 	}
-	if err := fr.pg.DbConnect.First(secondUser).Error; err != nil {
+	if err := fr.pg.DbConnect.First(&entity.Friendship{}, "first_user_id = ? AND second_user_id = ?",
+		target, follower).Error; err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
-		firstUser.FriendshipStatus = constants.Status1
-		if err := fr.pg.DbConnect.Create(firstUser).Error; err != nil {
+		friendship.FriendshipStatus = constants.Status1
+		if err := fr.pg.DbConnect.Create(friendship).Error; err != nil {
 			return err
 		}
 	} else {
-		if err := fr.pg.DbConnect.Model(secondUser).Update(&entity.Friendship{
+		if err := fr.pg.DbConnect.Model(friendship).Update(&entity.Friendship{
 			FriendshipStatus: constants.Status2,
 		}).Error; err != nil {
 			return err
