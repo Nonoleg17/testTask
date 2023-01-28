@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"testCase/config"
+	"testCase/internal/app"
 )
 
 func main() {
 	cfg := config.NewConfig()
-	fmt.Println(cfg)
+	app.Run(cfg)
 }

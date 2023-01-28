@@ -2,13 +2,13 @@ CREATE TABLE IF NOT EXISTS "User" (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     firstname text not null,
     surname text not null,
-    midlename text not null,
+    middlename text not null,
     fio text GENERATED ALWAYS AS (surname || ' ' || firstname || ' ' ||
-                                  midlename) STORED,
+                                  middlename) STORED,
     sex text not null,
     age int not null
     );
-CREATE TABLE IF NOT EXISTS "Frindship" (
+CREATE TABLE IF NOT EXISTS "Friendship" (
     user_1_id BIGINT,
     user_2_id BIGINT,
     friendship_status text,
@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS "Product"
 (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     description text,
-    price text,
+    price int,
+    currency text,
     left_in_stock int
 
 );
@@ -54,7 +55,7 @@ CREATE TRIGGER check_left_in_stock_trigger
     for each row
     execute function check_left_in_stock();
 
-INSERT INTO "User"(firstname,surname,midlename,sex,age) values
+INSERT INTO "User"(firstname,surname,middlename,sex,age) values
                                                              ('John','Snow','Eddard','M',20),
                                                              ('Mike','Lobo', 'Dekkard','M',21),
                                                              ('Lina','Rola', 'Ridic','W',45),
@@ -62,10 +63,10 @@ INSERT INTO "User"(firstname,surname,midlename,sex,age) values
                                                              ('Peter','Polo', 'Line','M',60);
 
 
-INSERT INTO "Product"(description,price,left_in_stock) values
-                                                           ('Car', '1000 dollars', 10),
-                                                           ('Book', '500 rubbles', 1),
-                                                           ('Radio', '15 euro', 0),
-                                                           ('Clothes', '300 dollars', 19),
-                                                           ('Clock', '800 rubbles', 2);
+INSERT INTO "Product"(description,price,currency, left_in_stock) values
+                                                           ('Car', 1000, 'dollars', 10),
+                                                           ('Book', 500, 'rubbles', 1),
+                                                           ('Radio', 15, 'euro', 0),
+                                                           ('Clothes', 300, 'dollars', 19),
+                                                           ('Clock', 800, 'rubbles', 2);
 

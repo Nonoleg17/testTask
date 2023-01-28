@@ -3,6 +3,7 @@ package postgres
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 	"os"
 	"strconv"
 	"testCase/config"
@@ -27,6 +28,7 @@ func New(db *config.Config) (*Postgres, error) {
 		dbConn.LogMode(true)
 	}
 	dbConn.Update()
+	dbConn.AutoMigrate()
 	pg := &Postgres{
 		DbConnect: dbConn,
 	}
