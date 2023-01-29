@@ -15,7 +15,7 @@ sudo docker-compose  -f docker-compose.envonly.yml up
 #### Структура БД
 В качестве БД используется Postgresql 12. Данная БД развернута в docker. Для иницализации БД в docker передается файл config/postgres/init.sql, в котором инициализирована БД( а также триггеры) и добавлены данные в таблицы User и Product. Структура БД реализована в соотвествии с заданием (генерации uuid, сбор fio, нельзя заказать продукт на складе, если его нет и т.д.)
 ER диаграмма БД представлена на рисунке:
-![](pictures/Screenshot from 2023-01-29 12-39-04.png)
+![](pictures/img.png)
 
 На рисунке представлена связи между сущностями. Между users и friendships связь many to many, также между orders и product связь many to many. Между users и orders реализована связь one to many.
 
