@@ -12,9 +12,19 @@ sudo docker-compose up
 sudo docker-compose  -f docker-compose.envonly.yml up
 ```
 ### Структура проекта
-UML Диаграмма БД представлена на рисунке:
-
-
-На рисунке представлена связи между сущностями. Между users и friendships связь many to many, также между orders и product связь many to many
+#### Структура БД
+В качестве БД используется Postgresql 12. Данная БД развернута в docker. Для иницализации БД в docker передается файл config/postgres/init.sql, в котором инициализирована БД( а также триггеры) и добавлены данные в таблицы User и Product.
+ER диаграмма БД представлена на рисунке:
 ![](pictures/Screenshot from 2023-01-29 12-39-04.png)
+
+На рисунке представлена связи между сущностями. Между users и friendships связь many to many, также между orders и product связь many to many. Между users и orders реализована связь one to many.
+
+#### Структура проекта
+Модели для каждой сущности для работы с БД прописаны в папке internal/entity/. 
+
+Структура каждого запроса:
+
+* Запрос создания пользователя. POST http://127.0.0.1:8000/user/create-user. Body
+
+
 
