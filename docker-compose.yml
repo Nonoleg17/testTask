@@ -13,7 +13,25 @@ services:
       - "5432:5432"
     volumes:
       - ./config/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
+  app:
+    build: .
+    restart: on-failure
+    container_name: app
+    image: app
+    environment:
+      PG_IP: postgres
+      PG_PORT: 5432
+      PG_DATABASE: postgres
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      LOG_LEVEL: DEBUG
+      HTTP_PORT: 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - network
 networks:
   network:
     driver: bridge
