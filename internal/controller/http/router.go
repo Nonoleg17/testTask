@@ -8,18 +8,14 @@ import (
 	"testCase/pkg/logger"
 )
 
-func NewRouter(handler *gin.Engine, l logger.Interface, u usecase.User, p usecase.Product,
-	f usecase.Friendship, o usecase.Order, op usecase.OrderProduct) {
+func NewRouter(handler *gin.Engine, l logger.Interface, r usecase.Rle) {
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
 	swaggerHandler := ginSwagger.DisablingWrapHandler(swaggerFiles.Handler, "DISABLE_SWAGGER_HTTP_HANDLER")
 	handler.GET("/swagger/*any", swaggerHandler)
 	h := handler.Group("/")
 	{
-		newUserRoutes(h, u, l)
-		newProductRoutes(h, p, l)
-		newFriendshipRoutes(h, f, l)
-		newOrderRoutes(h, o, op, l)
+		newRleRoutes(h, r, l)
 	}
 
 }

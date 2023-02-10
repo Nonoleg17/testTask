@@ -33,16 +33,16 @@ services:
     networks:
       - network
 
-  integration:
-    build:
-      context: .
-      dockerfile: integration_test/Dockerfile
-    container_name: integration
-    image: integration
-    depends_on:
-      - app
-    networks:
-      - network
+ # integration:
+  #  build:
+  #    context: .
+   #   dockerfile: integration_test/Dockerfile
+   # container_name: integration
+   # image: integration
+   # depends_on:
+   #   - app
+   # networks:
+   #   - network
 networks:
   network:
     driver: bridge
