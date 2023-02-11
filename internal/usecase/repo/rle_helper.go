@@ -6,7 +6,7 @@ import (
 	"unicode"
 )
 
-func encode(input string) string {
+func encode(input string, index int, c chan RleChan) {
 	var result strings.Builder
 	for len(input) > 0 {
 		firstLetter := input[0]
@@ -17,9 +17,9 @@ func encode(input string) string {
 		}
 		result.WriteString(string(firstLetter))
 	}
-	return result.String()
+	c <- RleChan{index: index, value: result.String()}
 }
-func decode(input string) string {
+func decode(input string, index int, c chan RleChan) {
 	var result strings.Builder
 	for len(input) > 0 {
 		letterIndex := strings.IndexFunc(input, func(r rune) bool { return !unicode.IsDigit(r) })
@@ -30,5 +30,5 @@ func decode(input string) string {
 		result.WriteString(strings.Repeat(string(input[letterIndex]), multiply))
 		input = input[letterIndex+1:]
 	}
-	return result.String()
+	c <- RleChan{index: index, value: result.String()}
 }

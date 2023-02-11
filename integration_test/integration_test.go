@@ -8,71 +8,63 @@ import (
 
 const (
 	// Attempts connection
-	host = "app:8000"
+	host = "127.0.0.1:8000"
 	// HTTP REST
 	basePath = "http://" + host + "/"
 )
 
-func TestHTTPCreateUser(t *testing.T) {
-	body := `{
-	"firstname":"Test",
-    "surname":"Tester",
-    "middleName":"Robot",
-    "sex": "M",
-     "age":16
-		
+func TestHTTPEncode(t *testing.T) {
+	firstTestBody := `{
+	"text": ["aaaa bb cc", "tqwer", "ttt qwe qweyyy"]	
 	}`
+	firstTestRes := []interface{}{"4a 2b 2c", "tqwer", "3t qwe qwe3y"}
 	Test(t,
-		Description("CreateUser Success"),
-		Post(basePath+"user/create-user"),
+		Description("Encode First Test"),
+		Post(basePath+"rle/encode"),
 		Send().Headers("Content-Type").Add("application/json"),
-		Send().Body().String(body),
+		Send().Body().String(firstTestBody),
 		Expect().Status().Equal(http.StatusOK),
-		Expect().Body().JSON().Equal("Success create"),
+		Expect().Body().JSON().Equal(firstTestRes),
 	)
-	body = `{
-  	"middleName":"Robot",
-    "sex": "W",
-     "age":20
+	secondTestBody := `{
+	"text": ["a b c", "t w q", "oooooo"]	
 	}`
+	secondTestRes := []interface{}{"a b c", "t w q", "6o"}
 	Test(t,
-		Description("CreateUser Error"),
-		Post(basePath+"user/create-user"),
+		Description("Encode Second Test"),
+		Post(basePath+"rle/encode"),
 		Send().Headers("Content-Type").Add("application/json"),
-		Send().Body().String(body),
-		Expect().Status().Equal(http.StatusBadRequest),
-		Expect().Body().JSON().JQ(".error").Equal("invalid request body"),
+		Send().Body().String(secondTestBody),
+		Expect().Status().Equal(http.StatusOK),
+		Expect().Body().JSON().Equal(secondTestRes),
 	)
+
 }
 
-func TestHTTPCreateProduct(t *testing.T) {
-	body := `{
-	"description":"Test",
-    "price":203,
-    "currency":"dollars",
-    "left_in_stock": 10
-		
+func TestHTTPDecode(t *testing.T) {
+	firstTestBody := `{
+	"text": ["4a 2b 2c", "tqwer", "3t qwe qwe3y"]	
 	}`
+	firstTestRes := []interface{}{"aaaa bb cc", "tqwer", "ttt qwe qweyyy"}
 	Test(t,
-		Description("CreateProduct Success"),
-		Post(basePath+"product/create-product"),
+		Description("Decode First Test"),
+		Post(basePath+"rle/decode"),
 		Send().Headers("Content-Type").Add("application/json"),
-		Send().Body().String(body),
+		Send().Body().String(firstTestBody),
 		Expect().Status().Equal(http.StatusOK),
-		Expect().Body().JSON().Equal("Success create"),
+		Expect().Body().JSON().Equal(firstTestRes),
 	)
-	body = `{
-  	"description":"Test_prod",
-    "price":2032,
-    "currency":"dollars",
-    "left_in_stock": -1
+	secondTestBody := `{
+	"text": ["a b c", "t w q", "6o"]	
 	}`
+	secondTestRes := []interface{}{"a b c", "t w q", "oooooo"}
 	Test(t,
-		Description("CreateProduct Error"),
-		Post(basePath+"product/create-product"),
+		Description("Decode Second Test"),
+		Post(basePath+"rle/decode"),
 		Send().Headers("Content-Type").Add("application/json"),
-		Send().Body().String(body),
-		Expect().Status().Equal(http.StatusInternalServerError),
-		Expect().Body().JSON().JQ(".error").Equal("create Product problem"),
+		Send().Body().String(secondTestBody),
+		Expect().Status().Equal(http.StatusOK),
+		Expect().Body().JSON().Equal(secondTestRes),
 	)
+
 }
