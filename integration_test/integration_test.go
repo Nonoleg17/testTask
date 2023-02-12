@@ -8,7 +8,7 @@ import (
 
 const (
 	// Attempts connection
-	host = "127.0.0.1:8000"
+	host = "app:8000"
 	// HTTP REST
 	basePath = "http://" + host + "/"
 )

@@ -8,7 +8,6 @@ require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/lib/pq v1.1.1
 	github.com/rs/zerolog v1.28.0
-	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
 	github.com/swaggo/gin-swagger v1.5.3
